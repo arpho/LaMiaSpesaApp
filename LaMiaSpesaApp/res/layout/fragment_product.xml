@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.eximia.lamiaspesaapp.app.ProductFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/scan_format"
+        android:layout_width="133dp"
+        android:layout_height="90dp"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:id="@+id/scan_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/scan_format"
+        />
+
+    <ImageView
+		android:contentDescription="@string/immagine_prodotto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:id="@+id/immagine_prodotto"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/testo_descrizione"
+        android:layout_below="@+id/immagine_prodotto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp" />
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="20dp"
+        android:text="Large Text"
+        android:id="@+id/testo_prodotto"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/testo_descrizione"
+        android:layout_alignStart="@+id/testo_descrizione" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Modalità"
+        android:id="@+id/testo_sviluppo"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_below="@+id/immagine_prodotto" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:paddingBottom="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="11dp" />
+
+
+</RelativeLayout>

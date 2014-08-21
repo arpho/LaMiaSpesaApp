@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.eximia.lamiaspesaapp.app.ScanFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/carica_button"
+        android:background="@drawable/ico_carica"
+        android:layout_below="@+id/dispensa_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/scarica_button"
+        android:background="@drawable/ico_scarica"
+        android:layout_alignTop="@+id/carica_button"
+        android:layout_alignLeft="@+id/scan_button"
+        android:layout_alignStart="@+id/scan_button" />"/>
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/dispensa_button"
+        android:background="@drawable/ico_prodotti"
+        android:layout_marginTop="63dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/scan_button"
+        android:background="@drawable/ico_verifica"
+        android:layout_alignTop="@+id/dispensa_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>
