@@ -1,4 +1,4 @@
-package com.eximia.lamiaspesaapp.app;
+package com.eximia.lamiaspesaapp;
 
 import com.eximia.lamiaspesaapp.R;
 
