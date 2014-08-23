@@ -13,7 +13,8 @@
 	<string name="Login">Login</string>
 	<string name="email_address">Email address</string>
 	<string name="password">Password</string>
-	<string name="Sign in">Sign in</string>
+	<string name="Sign_in">Sign in</string>
 	<string name="Password">Password</string>
 	<string name="New_user">New user</string>
+	<string name="titolo"></string>
 </resources>

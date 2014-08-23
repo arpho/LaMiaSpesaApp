@@ -102,6 +102,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
                 Bundle data = new Bundle();
                 try {
                     authtoken = sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
+                    // mAuthTokenType è valorizzato in oncreate
 
                     data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
