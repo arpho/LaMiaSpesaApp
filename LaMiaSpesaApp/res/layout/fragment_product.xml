@@ -1,78 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.eximia.lamiaspesaapp.ProductFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/scan_format"
-        android:layout_width="133dp"
-        android:layout_height="90dp"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        />
-    <TextView
-        android:id="@+id/scan_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/scan_format"
-        />
-
-    <ImageView
-		android:contentDescription="@string/immagine_prodotto"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="fitXY"
-        android:id="@+id/immagine_prodotto"
-        android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/testo_descrizione"
-        android:layout_below="@+id/immagine_prodotto"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="56dp" />
-
-
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="20dp"
-        android:text="Large Text"
-        android:id="@+id/testo_prodotto"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/testo_descrizione"
-        android:layout_alignStart="@+id/testo_descrizione" />
-
+    android:orientation="vertical" >
+    
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Modalità"
         android:id="@+id/testo_sviluppo"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:layout_below="@+id/immagine_prodotto" />
+        android:layout_marginTop="30dp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="20dp"
+        android:text="item name"
+        android:id="@+id/testo_prodotto"/>
+    
+    <ImageView
+        android:contentDescription="@string/immagine_prodotto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:id="@+id/immagine_prodotto"
+        android:layout_marginTop="10dp" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="20dp"
+        android:text="Large Text"
+        android:id="@+id/testo_descrizione"/>
+    
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/voteup"
+            android:contentDescription="voteup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/thumb_up" />
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar"
         android:paddingBottom="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="11dp" />
 
+    <ImageButton
+        android:id="@+id/votedown"
+        android:contentDescription="votedown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/thumb_down" />
 
-</RelativeLayout>
+</LinearLayout>
+</LinearLayout>

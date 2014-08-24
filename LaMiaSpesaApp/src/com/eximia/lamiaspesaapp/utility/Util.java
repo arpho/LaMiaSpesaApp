@@ -5,10 +5,10 @@ package com.eximia.lamiaspesaapp.utility;
  */
 public class Util {
 
-    public static String getBaseUrl() {
-        //TODO deve ottenere l'indirizzo da un file di properties
-        return "http://192.168.1.66:8080";
-        //TODO ottenere l'indirizzo da un file di properties
+	public static String getBaseUrl() {
+		// TODO deve ottenere l'indirizzo da un file di properties
+		return "http://192.168.1.66:8080";
+		// TODO ottenere l'indirizzo da un file di properties
 
-    }
+	}
 }

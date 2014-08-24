@@ -25,6 +25,7 @@ public class EximiaAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+    	android.os.Debug.waitForDebugger();
         Log.d("eximia", TAG + "> addAccount");
 
         final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
@@ -35,6 +36,11 @@ public class EximiaAuthenticator extends AbstractAccountAuthenticator {
 
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+        Log.d( TAG , "ho preparato il bundle");
+        Log.d(TAG, "accountType: "+accountType);
+        Log.d( TAG , "accountTokenType: "+authTokenType);
+        Log.d( TAG, "response: "+response);
+        
         return bundle;
     }
 

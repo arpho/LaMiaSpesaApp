@@ -9,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,16 +35,16 @@ public class ScanActivity extends FragmentActivity implements
 		ProductFragment.OnFragmentInteractionListener {
 	private static final String TAG = ScanActivity.class.getSimpleName();
 	private final Boolean sviluppo = true;
+	private Boolean serverRaggiungibile = true;
 
 	public Bundle preparaBundle(JSONObject data) throws JSONException {
 		Bundle bundle = new Bundle();
 		bundle.putBoolean("hasResult", true);
-		bundle.putString("content", "data from server");
 		bundle.putString("format", "json");
-		bundle.putString("prodotto", data.getString("itemname"));
+		bundle.putString("nome_prodotto", data.getString("itemname"));
 		bundle.putString("descrizione", data.getString("description"));
-		Double ratingsUp = new Double(data.getString("ratingsup"));
-		Double ratingsdown = new Double(data.getString("ratingsdown"));
+		Double ratingsUp = Double.valueOf(data.getString("ratingsup"));
+		Double ratingsdown = Double.valueOf(data.getString("ratingsdown"));
 		Double rate = ratingsUp / (ratingsUp + ratingsdown) * 5;
 		bundle.putDouble("rate", rate);
 		bundle.putString("picture", data.getString("pictures"));
@@ -77,24 +78,6 @@ public class ScanActivity extends FragmentActivity implements
 		return bundle;
 	}
 
-	private void switch2ProductFragment(String format, String content) {
-		android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-		android.support.v4.app.FragmentTransaction transaction;
-		transaction = fm.beginTransaction();
-		Bundle bundle = preparaBundle(format, content, "questo è un test",
-				"test per verificare  fragment_product", 3.1, "");
-		ProductFragment productFragment = new ProductFragment();
-		productFragment.setArguments(bundle);
-		transaction.replace(R.id.fragment_container, productFragment)
-				.setTransition(
-						android.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		transaction.addToBackStack(null);
-		transaction.commit();
-		Log.d(TAG, "format " + format);
-		Log.d(TAG, "content " + content);
-
-	}
-
 	private void switch2ProductFragment(JSONObject data) {
 		android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
 		android.support.v4.app.FragmentTransaction transaction;
@@ -111,12 +94,11 @@ public class ScanActivity extends FragmentActivity implements
 		}
 		ProductFragment productFragment = new ProductFragment();
 		productFragment.setArguments(bundle);
-		transaction.replace(R.id.fragment_container, productFragment)
-				.setTransition(
-						android.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		transaction.addToBackStack(null);
+		transaction.replace(R.id.fragment_container, productFragment,
+				"prodotto").setTransition(
+				android.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		transaction.addToBackStack("scan");
 		transaction.commit();
-		Log.d(TAG, " fin qui tutto ok");
 
 	}
 
@@ -164,20 +146,28 @@ public class ScanActivity extends FragmentActivity implements
 	private class GetItemInfo extends AsyncTask<String, Void, String> {
 
 		protected void onPostExecute(String result) {
-			Log.d(TAG, "sono in onPostExecute, cerco di parsare il json: "
-					+ result);
-			try {
-				JSONObject resultObject = new JSONObject(result);
-				Log.d(TAG, "ho parsato il json WW");
-				Log.d(TAG, "cerco di estrarre ilcontenuto di data");
-				JSONObject data = new JSONObject(resultObject.getString("data"));
-				Log.d(TAG, "upc_number: " + data.getString("upc_number"));
-				switch2ProductFragment(data);
+			if (serverRaggiungibile) {
+				Log.d(TAG, "sono in onPostExecute, cerco di parsare il json: "
+						+ result);
+				try {
+					JSONObject resultObject = new JSONObject(result);
+					Log.d(TAG, "ho parsato il json WW");
+					Log.d(TAG, "cerco di estrarre ilcontenuto di data");
+					JSONObject data = new JSONObject(
+							resultObject.getString("data"));
+					Log.d(TAG, "upc_number: " + data.getString("upc_number"));
+					switch2ProductFragment(data);
 
-			} catch (Exception e) {
-				Log.d(TAG, "errore parsando il json ");
-				Log.e(TAG, e.toString());
-				preparaBundleNoResult();
+				} catch (Exception e) {
+					Log.d(TAG, "errore parsando il json ");
+					Log.e(TAG, e.toString());
+					preparaBundleNoResult();
+				}
+			} else {
+
+				Toast toast = Toast.makeText(getApplicationContext(),
+						"server non raggiungibile!!", Toast.LENGTH_LONG);
+				toast.show();
 			}
 		}
 
@@ -203,6 +193,10 @@ public class ScanActivity extends FragmentActivity implements
 							itemBuilder.append(lineIn);
 						}
 					}
+				} catch (HttpHostConnectException e) {
+					Log.d(TAG, " server non raggiungibile");
+					serverRaggiungibile = false;
+					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -262,7 +256,6 @@ public class ScanActivity extends FragmentActivity implements
 
 	@Override
 	public void onFragmentInteraction() {
-		Log.d(TAG, "l'attività riceve il click");
 		IntentIntegrator scanIntegrator = new IntentIntegrator(this);
 		if (sviluppo)
 			interrogaServer("UPC_A", "7313468675004");

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.eximia.lamiaspesaapp.R;
@@ -82,17 +83,17 @@ public class ProductFragment extends Fragment {
     private TextView formatTxt, contentTxt, sviluppoText;
     private ImageView thumbView;
 
-    public void setFormatTxt(String formatTxt) {
+    /*public void setFormatTxt(String formatTxt) {
         this.formatTxt.setText(formatTxt); 
         TextView textView = (TextView) getView().findViewById(R.id.scan_format);
         textView.setText(formatTxt);
-    }
-
+    }*/
+/*
     public void setContentTxt(String contentTxt) {
         TextView textView = (TextView) getView().findViewById(R.id.scan_content);
         textView.setText(contentTxt);
     }
-
+*/
 
     // TODO: Rename and change types of parameters
     private String Param1;
@@ -136,14 +137,19 @@ public class ProductFragment extends Fragment {
         Txt.setText(txt);
 
     }
+    private void setRating(Double rate){
+    	RatingBar bar = (RatingBar) view.findViewById(R.id.ratingBar);
+    	bar.setIsIndicator(true);
+    	bar.setNumStars((int)Math.round(rate));
+    }
 
     private View setValidData(View view) {
-        setText(view, R.id.testo_prodotto, this.getArguments().getString("prodotto"));
+        setText(view, R.id.testo_prodotto, this.getArguments().getString("nome_prodotto"));
         setText(view, R.id.testo_descrizione, this.getArguments().getString("descrizione"));
         setPicture(view, R.id.immagine_prodotto, this.getArguments().getString("picture"));
-        setText(view, R.id.scan_format, this.getArguments().getString("format"));
         setText(view, R.id.testo_sviluppo, this.getArguments().getString("developing"));
-        setText(view, R.id.scan_content, this.getArguments().getString("content"));
+        Double r = this.getArguments().getDouble("rate");
+        setRating(r);
         return view;
     }
 
@@ -161,9 +167,9 @@ public class ProductFragment extends Fragment {
         setText(view, R.id.testo_prodotto, "");
         setText(view, R.id.testo_descrizione, "");
         setPicture(view, R.id.immagine_prodotto, this.getArguments().getString("picture"));
-        setText(view, R.id.scan_format, this.getArguments().getString("format"));
+        //setText(view, R.id.scan_format, this.getArguments().getString("format"));
         setText(view, R.id.testo_sviluppo, this.getArguments().getString("developing"));
-        setText(view, R.id.scan_content, this.getArguments().getString("content"));
+        //setText(view, R.id.scan_content, this.getArguments().getString("content"));
         return view;
     }
 
