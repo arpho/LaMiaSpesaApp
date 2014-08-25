@@ -176,9 +176,11 @@ public class ScanActivity extends FragmentActivity implements
 			StringBuilder itemBuilder = new StringBuilder();
 			for (String itemSearchURL : productURLs) {
 				HttpClient itemClient = new DefaultHttpClient();
+				HttpResponse itemResponse = null;
+				HttpGet itemGet = null;
 				try {
-					HttpGet itemGet = new HttpGet(itemSearchURL);
-					HttpResponse itemResponse = itemClient.execute(itemGet);
+					 itemGet = new HttpGet(itemSearchURL);
+					itemResponse = itemClient.execute(itemGet);
 					StatusLine itemSearchStatus = itemResponse.getStatusLine();
 					if (itemSearchStatus.getStatusCode() == 200) {
 						// we have a result

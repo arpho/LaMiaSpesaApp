@@ -28,6 +28,15 @@
     <meta-data android:name="android.accounts.AccountAuthenticator"
                android:resource="@xml/authenticator" />
 </service>
+<activity android:name="com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity" android:label="@string/login_label"/>
+        <activity android:name="com.eximia.lamiaspesaapp.authentication.SignUpActivity" android:label="@string/signup_title"/>
+        <service android:name="com.eximia.lamiaspesaapp.authentication.EximiaAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data android:name="android.accounts.AccountAuthenticator"
+                       android:resource="@xml/authenticator" />
+        </service>
     </application>
 
 </manifest>

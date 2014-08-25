@@ -10,11 +10,12 @@
     <string name="label">LaMiaSpesa</string>
     <string name="titolotop">titolo</string>
 	<string name="immagine_prodotto">thumview del prodotto</string>
-	<string name="Login">Login</string>
+	<string name="login_label">Login</string>
 	<string name="email_address">Email address</string>
 	<string name="password">Password</string>
 	<string name="Sign_in">Sign in</string>
 	<string name="Password">Password</string>
 	<string name="New_user">New user</string>
 	<string name="titolo"></string>
+	<string name="signup_title">Registrazione Utente</string>
 </resources>

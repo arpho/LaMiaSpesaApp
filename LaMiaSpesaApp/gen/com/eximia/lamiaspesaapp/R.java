@@ -68,7 +68,6 @@ public final class R {
         public static final int scan=0x7f080000;
     }
     public static final class string {
-        public static final int Login=0x7f060009;
         public static final int New_user=0x7f06000e;
         public static final int Password=0x7f06000d;
         public static final int Sign_in=0x7f06000c;
@@ -80,8 +79,10 @@ public final class R {
         public static final int hello_world=0x7f060001;
         public static final int immagine_prodotto=0x7f060008;
         public static final int label=0x7f060006;
+        public static final int login_label=0x7f060009;
         public static final int password=0x7f06000b;
         public static final int scan=0x7f060003;
+        public static final int signup_title=0x7f060010;
         public static final int titolo=0x7f06000f;
         public static final int titolotop=0x7f060007;
     }
