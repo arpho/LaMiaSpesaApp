@@ -143,8 +143,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
             // Creating the account on the device and setting the auth token we got
             // (Not setting the auth token will cause another call to the server to authenticate the user)
+            
             mAccountManager.addAccountExplicitly(account, accountPassword, null);
+           Log.d("eximia","account added");
             mAccountManager.setAuthToken(account, authtokenType, authtoken);
+            Log.d("eximia","ok token");
         } else {
             Log.d("eximia", TAG + "> finishLogin > setPassword");
             mAccountManager.setPassword(account, accountPassword);
