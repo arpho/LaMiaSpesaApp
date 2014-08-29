@@ -13,8 +13,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -75,7 +79,7 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
 		Log.d("eximia", "userSignIn");
 
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		String url = Util.getBaseUrl() + ":8080/api_authentication";
+		String url = Util.getBaseUrl() + "/api_authentication";
 		// TODO impostare per il mio server
 		// authType è il tipo di autenticazione richiesta, a me non interessa
 
@@ -87,35 +91,41 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
 			e.printStackTrace();
 		}
 		url += "?" + query;
+		Log.d("eximia", url);
 
-		HttpGet httpGet = new HttpGet(url);
+		HttpPost httpPost = new HttpPost(url);
 
-		httpGet.addHeader("X-Parse-Application-Id",
+		httpPost.addHeader("X-Parse-Application-Id",
 				"XUafJTkPikD5XN5HxciweVuSe12gDgk2tzMltOhr");
-		httpGet.addHeader("X-Parse-REST-API-Key",
+		httpPost.addHeader("X-Parse-REST-API-Key",
 				"8L9yTQ3M86O4iiucwWb4JS7HkxoSKo7ssJqGChWx");
 
 		HttpParams params = new BasicHttpParams();
 		params.setParameter("email", user);
 		params.setParameter("password", pass);
-		httpGet.setParams(params);
+		httpPost.setParams(params);
 		// httpGet.getParams().setParameter("username",
 		// user).setParameter("password", pass);
 
 		String authtoken = null;
+		StringBuilder itemBuilder = new StringBuilder();
 		try {
-			HttpResponse response = httpClient.execute(httpGet);
-
-			String responseString = EntityUtils.toString(response.getEntity());
-			if (response.getStatusLine().getStatusCode() != 200) {
-				ParseComError error = new Gson().fromJson(responseString,
-						ParseComError.class);
-				throw new Exception("Error signing-in [" + error.code + "] - "
-						+ error.error);
+			HttpResponse response = httpClient.execute(httpPost);
+			//String responseString = EntityUtils.toString(response.getEntity());
+			if (response.getStatusLine().getStatusCode() == 401)
+				throw new Exception("not authorized");
+			if (response.getStatusLine().getStatusCode() == 200) {
+				String responseText = EntityUtils.toString(response.getEntity()); 
+				authtoken = new Util().getToken(responseText);
+				Log.d("eximia",authtoken);
+				/*
+				 * throw new Exception("Error signing-in [" + error.code +
+				 * "] - " + error.error);
+				 */
 			}
 
-			User loggedUser = new Gson().fromJson(responseString, User.class);
-			authtoken = loggedUser.sessionToken;
+			// User loggedUser = new Gson().fromJson(response.toString(),
+			// User.class);
 
 		} catch (IOException e) {
 			e.printStackTrace();
