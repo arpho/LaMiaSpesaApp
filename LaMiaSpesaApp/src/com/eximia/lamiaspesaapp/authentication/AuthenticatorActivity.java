@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.eximia.lamiaspesaapp.R;
+import com.eximia.lamiaspesaapp.utility.Util;
+
 import static com.eximia.lamiaspesaapp.authentication.AccountGeneral.sServerAuthenticate;
 
 /**
@@ -21,11 +23,6 @@ import static com.eximia.lamiaspesaapp.authentication.AccountGeneral.sServerAuth
  * It sends back to the Authenticator the result.
  */
 public class AuthenticatorActivity extends AccountAuthenticatorActivity {
-
-    public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
-    public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
-    public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
-    public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
 
     public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
 
@@ -47,8 +44,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         setContentView(R.layout.act_login);
         mAccountManager = AccountManager.get(getBaseContext());
 
-        String accountName = getIntent().getStringExtra(ARG_ACCOUNT_NAME);
-        mAuthTokenType = getIntent().getStringExtra(ARG_AUTH_TYPE);
+        String accountName = getIntent().getStringExtra(new Util().getProperty("ARG_ACCOUNT_NAME"));
+        mAuthTokenType = getIntent().getStringExtra(new Util().getProperty("ARG_AUTH_TYPE"));
         if (mAuthTokenType == null)
             mAuthTokenType = AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS;
 
@@ -89,7 +86,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         final String userName = ((TextView) findViewById(R.id.accountName)).getText().toString();
         final String userPass = ((TextView) findViewById(R.id.accountPassword)).getText().toString();
 
-        final String accountType = getIntent().getStringExtra(ARG_ACCOUNT_TYPE);
+        final String accountType = getIntent().getStringExtra(new Util().getProperty("ARG_ACCOUNT_TYPE"));
 
         new AsyncTask<String, Void, Intent>() {
 
@@ -136,7 +133,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
         String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
         final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
 
-        if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+        if (getIntent().getBooleanExtra(new Util().getProperty("ARG_IS_ADDING_NEW_ACCOUNT"), false)) {
             Log.d("eximia", TAG + "> finishLogin > addAccountExplicitly");
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
             String authtokenType = mAuthTokenType;

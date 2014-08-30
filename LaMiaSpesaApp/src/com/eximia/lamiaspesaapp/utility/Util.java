@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,6 +29,20 @@ public class Util {
 		return "http://192.168.1.66:8080";// "http://10.141.158.1:8080";
 		// TODO ottenere l'indirizzo da un file di properties
 
+	}
+	public String getProperty(String key){
+		Properties props=new Properties();
+		//new File("res/raw/textfile.txt")
+		InputStream inputStream = 
+		this.getClass().getClassLoader().getResourceAsStream("res/raw/lamiaspesaapp.properties");
+		try {
+			props.load(inputStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return props.getProperty(key);
 	}
 
 	public String estraiTokenMyWay(HttpResponse itemResponse)

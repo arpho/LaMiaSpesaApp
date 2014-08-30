@@ -1,5 +1,7 @@
 package com.eximia.lamiaspesaapp.authentication;
 
+import com.eximia.lamiaspesaapp.utility.Util;
+
 import android.accounts.*;
 import android.content.Context;
 import android.content.Intent;
@@ -29,9 +31,9 @@ public class EximiaAuthenticator extends AbstractAccountAuthenticator {
         Log.d("eximia", TAG + "> addAccount");
 
         final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, accountType);
-        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
-        intent.putExtra(AuthenticatorActivity.ARG_IS_ADDING_NEW_ACCOUNT, true);
+        intent.putExtra(new Util().getProperty("AuthenticatorActivity.ARG_ACCOUNT_TYPE"), accountType);
+        intent.putExtra(new Util().getProperty("ARG_AUTH_TYPE"), authTokenType);
+        intent.putExtra(new Util().getProperty("ARG_IS_ADDING_NEW_ACCOUNT"), true);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 
         final Bundle bundle = new Bundle();
@@ -92,9 +94,9 @@ public class EximiaAuthenticator extends AbstractAccountAuthenticator {
         // an intent to display our AuthenticatorActivity.
         final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, account.type);
-        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_NAME, account.name);
+        intent.putExtra(new Util().getProperty("ARG_ACCOUNT_TYPE"), account.type);
+        intent.putExtra(new Util().getProperty("ARG_AUTH_TYPE"), authTokenType);
+        intent.putExtra(new Util().getProperty("ARG_ACCOUNT_NAME"), account.name);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;

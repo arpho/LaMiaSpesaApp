@@ -10,8 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.eximia.lamiaspesaapp.R;
+import com.eximia.lamiaspesaapp.utility.Util;
+
 import static com.eximia.lamiaspesaapp.authentication.AccountGeneral.sServerAuthenticate;
-import static com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity.ARG_ACCOUNT_TYPE;
 import static com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity.KEY_ERROR_MESSAGE;
 import static com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity.PARAM_USER_PASS;
 
@@ -31,7 +32,7 @@ public class SignUpActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAccountType = getIntent().getStringExtra(ARG_ACCOUNT_TYPE);
+        mAccountType = getIntent().getStringExtra(new Util().getProperty("ARG_ACCOUNT_TYPE"));
 
         setContentView(R.layout.act_register);
 

@@ -12,6 +12,7 @@ public class AccountGeneral {
      * Account type id
      */
     public static final String ACCOUNT_TYPE = "com.udinic.auth_example";
+    //TODO cambia i tipi
 
     /**
      * Account name
