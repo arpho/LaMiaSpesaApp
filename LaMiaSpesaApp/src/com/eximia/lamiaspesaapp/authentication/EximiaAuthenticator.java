@@ -62,7 +62,6 @@ public class EximiaAuthenticator extends AbstractAccountAuthenticator {
         // Extract the username and password from the Account Manager, and ask
         // the server for an appropriate AuthToken.
         final AccountManager am = AccountManager.get(mContext);
-
         String authToken = am.peekAuthToken(account, authTokenType);
 
         Log.d("eximia", TAG + "> peekAuthToken returned - " + authToken);

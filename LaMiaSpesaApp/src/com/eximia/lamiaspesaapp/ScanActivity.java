@@ -1,16 +1,20 @@
 package com.eximia.lamiaspesaapp;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +34,7 @@ import android.widget.Toast;
 import com.eximia.lamiaspesaapp.authentication.AccountGeneral;
 import com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity;
 import com.eximia.lamiaspesaapp.authentication.EximiaAuthenticator;
+import com.eximia.lamiaspesaapp.utility.SingleBundle;
 import com.eximia.lamiaspesaapp.utility.Util;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -39,9 +44,11 @@ public class ScanActivity extends FragmentActivity implements
 		ProductFragment.OnFragmentInteractionListener {
 	private static final String TAG = ScanActivity.class.getSimpleName();
 	private final Boolean sviluppo = true;
+	private Bundle scanBundle;
 	private Boolean serverRaggiungibile = true;
 	public final static String PARAM_USER_PASS = "USER_PASS";
 	private String scanContent4postlogin;
+
 	public Bundle preparaBundle(JSONObject data) throws JSONException {
 		Bundle bundle = new Bundle();
 		bundle.putBoolean("hasResult", true);
@@ -108,37 +115,56 @@ public class ScanActivity extends FragmentActivity implements
 	}
 
 	private void interrogaServer(String scanFormat, String scanContent) {
+		scanBundle.putString("scanContent",
+				new Util().normalizzaUpc(scanContent));
+		scanBundle.putString("scanFormat", scanFormat);
 		AccountManager mAccountManager = AccountManager.get(getBaseContext());
 		Account[] accounts = mAccountManager.getAccounts();
 		String token = null;
 		EximiaAuthenticator eauth = new EximiaAuthenticator(getBaseContext());
 		scanContent4postlogin = scanContent;
-		//TODO aggiungere nel bundle per onSaveInstance
+		// TODO aggiungere nel bundle per onSaveInstance
 		Account laMiaSpesa = getEximiaAccount(accounts);
-		//eauth.getAuthToken(response, account, authTokenType, options)
-		if (laMiaSpesa!=null){ //l'account esiste posso provare a chiuedere il token
-			 token = mAccountManager.peekAuthToken(laMiaSpesa, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS);
-				String urlRequest = prepareRequest(scanContent,token);
-				Log.d(TAG, "interrogo il server");
-				Log.d(TAG,urlRequest);
-				new GetItemInfo().execute(urlRequest);
-				// switch2ProductFragment(scanFormat,scanContent);
+		// eauth.getAuthToken(response, account, authTokenType, options)
+		if (laMiaSpesa != null) { // l'account esiste posso provare a chiuedere
+									// il token
+			token = mAccountManager.peekAuthToken(laMiaSpesa,
+					AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS);
+			String urlRequest = prepareRequest(scanContent, token);
+			Log.d(TAG, "interrogo il server");
+			Log.d(TAG, urlRequest);
+			new GetItemInfo().execute(urlRequest);
+			// switch2ProductFragment(scanFormat,scanContent);
 		}
 	}
 
 	private Account getEximiaAccount(Account[] accounts) {
 		Account out = null;
 		int i = 0;
-		while (i<accounts.length){
-			if (accounts[i].type.equalsIgnoreCase("com.eximia.lamiaspesaapp")) out = accounts[i];
-			i+=1;
+		while (i < accounts.length) {
+			if (accounts[i].type.equalsIgnoreCase("com.eximia.lamiaspesaapp"))
+				out = accounts[i];
+			i += 1;
+		}
+		return out;
+	}
+
+	private Account getEximiaAccount() {
+		AccountManager mAccountManager = AccountManager.get(getBaseContext());
+		Account[] accounts = mAccountManager.getAccounts();
+		Account out = null;
+		int i = 0;
+		while (i < accounts.length) {
+			if (accounts[i].type.equalsIgnoreCase("com.eximia.lamiaspesaapp"))
+				out = accounts[i];
+			i += 1;
 		}
 		return out;
 	}
 
 	private String prepareRequest(String scanContent, String token) {
 		// Properties props = new Properties();
-		Log.d(TAG,"token: "+token);
+		Log.d(TAG, "token: " + token);
 		StringBuilder url = new StringBuilder(Util.getBaseUrl());
 		url.append("/get_item?upc=");
 		url.append(scanContent);
@@ -146,7 +172,6 @@ public class ScanActivity extends FragmentActivity implements
 		url.append(token);
 		return url.toString();
 	}
-
 
 	private void elaboraRisultatoScan(IntentResult scanningResult) {
 		String scanContent = scanningResult.getContents();
@@ -169,27 +194,18 @@ public class ScanActivity extends FragmentActivity implements
 		}
 	}
 
-	
-	private void startLogin2Scan(){
-		Intent intent = new Intent(this, AuthenticatorActivity.class);
-		intent.putExtra(new Util().getProperty("EXTRA_SCAN_CONTENT"), scanContent4postlogin);
-		intent.putExtra(new Util().getProperty("EXTRA_LAUNCH_SCAN"), true);
-		//Log.d("eximia",new Util().getProperty("test"));
-		//TODO sistema intent.putExtra(, value)
-		intent.putExtra("scanContent", scanContent4postlogin);
-		startActivityForResult(intent,1);
-
-	}
 	private class GetItemInfo extends AsyncTask<String, Void, String> {
 
 		protected void onPostExecute(String result) {
-			if(result.equalsIgnoreCase("login")){
-				Log.d("eximia","sembra che debba loggarmi");
-				startLogin2Scan();
+			if (result.equalsIgnoreCase("login")) {
+				Log.d("eximia", "sembra che debba loggarmi");
+				scanBundle.putBoolean("scan2Complete", true);
+				new EseguiLogin().execute();
 			}
 			if (serverRaggiungibile) {
-				Log.d("eximia", "sono in onPostExecute, cerco di parsare il json: "
-						+ result);
+				Log.d("eximia",
+						"sono in onPostExecute, cerco di parsare il json: "
+								+ result);
 				try {
 					JSONObject resultObject = new JSONObject(result);
 					Log.d(TAG, "ho parsato il json WW");
@@ -220,7 +236,7 @@ public class ScanActivity extends FragmentActivity implements
 				HttpResponse itemResponse = null;
 				HttpGet itemGet = null;
 				try {
-					 itemGet = new HttpGet(itemSearchURL);
+					itemGet = new HttpGet(itemSearchURL);
 					itemResponse = itemClient.execute(itemGet);
 					StatusLine itemSearchStatus = itemResponse.getStatusLine();
 					if (itemSearchStatus.getStatusCode() == 401) {
@@ -253,26 +269,30 @@ public class ScanActivity extends FragmentActivity implements
 
 	public void onClick(View v) {
 		if (v.getId() == R.id.scan_button) {
-			Log.d(TAG,"richiesto scan");
+			Log.d(TAG, "richiesto scan");
 			IntentIntegrator scanIntegrator = new IntentIntegrator(this);
-			AccountManager mAccountManager = AccountManager.get(getBaseContext());
-            /*Bundle data = new Bundle();
-            data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
-            data.putString(AccountManager.KEY_ACCOUNT_TYPE, "com.eximia.lamiaspesaapp");
-            data.putString(PARAM_USER_PASS, userPass);
-			final Intent intent = new Intent();
-			intent.putExtras(data);
-			String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-			final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));*/
-			 
-			//String token = mAccountManager.peekAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS);
+			AccountManager mAccountManager = AccountManager
+					.get(getBaseContext());
+			/*
+			 * Bundle data = new Bundle();
+			 * data.putString(AccountManager.KEY_ACCOUNT_NAME, userName);
+			 * data.putString(AccountManager.KEY_ACCOUNT_TYPE,
+			 * "com.eximia.lamiaspesaapp"); data.putString(PARAM_USER_PASS,
+			 * userPass); final Intent intent = new Intent();
+			 * intent.putExtras(data); String accountName =
+			 * intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME); final
+			 * Account account = new Account(accountName,
+			 * intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+			 */
+
+			// String token = mAccountManager.peekAuthToken(account,
+			// AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS);
 			Log.d(TAG, "ricevuti account");
-			if (sviluppo){
+			if (sviluppo) {
 				Log.d(TAG, "modalità sviluppo");
 				interrogaServer("UPC_A", "7313468675004");
-			}
-			else{
-				Log.d("eximia","modalità produzione");
+			} else {
+				Log.d("eximia", "modalità produzione");
 				scanIntegrator.initiateScan();
 			}
 		}
@@ -284,6 +304,7 @@ public class ScanActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scan);
+		scanBundle = SingleBundle.getInstance();
 		// TODO settare le view per fragments
 		scanBtn = (ImageButton) findViewById(R.id.scan_button);
 		ScanFragment scanFragment = new ScanFragment();
@@ -328,6 +349,76 @@ public class ScanActivity extends FragmentActivity implements
 
 	@Override
 	public void onFragmentInteraction(Uri uri) {
+
+	}
+
+	class EseguiLogin extends AsyncTask<String, Void, String> {
+
+		private String url;
+		private Account lamiaspesaapp;
+		private AccountManager mAccountManager;
+
+		@Override
+		protected void onPreExecute() {
+			lamiaspesaapp = getEximiaAccount();
+			mAccountManager = AccountManager.get(getBaseContext());
+			url = buildUrl();
+		}
+
+		private String buildUrl() {
+			// TODO Auto-generated method stub
+			StringBuilder out = new StringBuilder(Util.getBaseUrl());
+			out.append("/api_authentication");
+			out.append("?email=");
+			out.append(lamiaspesaapp.name);
+			out.append("&password=");
+			out.append(mAccountManager.getPassword(lamiaspesaapp));
+			return out.toString();
+		}
+
+		@Override
+		protected void onPostExecute(String token) {
+			if (token != null)
+				mAccountManager.setAuthToken(lamiaspesaapp,
+						AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, token);
+			if (scanBundle.getBoolean("scan2Complete")) {
+				interrogaServer(scanBundle.getString("scanContent"),
+						scanBundle.getString("scanFormat"));
+			}
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = null;
+			HttpPost loginPost = null;
+			String token = null;
+			String responseText;
+			loginPost = new HttpPost(url);
+			try {
+				response = client.execute(loginPost);
+				if (response.getStatusLine().getStatusCode() == 401) {
+					// TODO o l'account non esiste o la password
+					// è stata cambiata, deve avviare login attivity o
+					// aggiornare le credenzialie questa setterà ilnuovo token
+				} else {
+					responseText = EntityUtils.toString(response.getEntity());
+					try {
+						token = new Util().getToken(responseText);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return token;
+		}
 
 	}
 }

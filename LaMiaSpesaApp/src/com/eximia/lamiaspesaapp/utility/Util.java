@@ -30,11 +30,12 @@ public class Util {
 		// TODO ottenere l'indirizzo da un file di properties
 
 	}
-	public String getProperty(String key){
-		Properties props=new Properties();
-		//new File("res/raw/textfile.txt")
-		InputStream inputStream = 
-		this.getClass().getClassLoader().getResourceAsStream("res/raw/lamiaspesaapp.properties");
+
+	public String getProperty(String key) {
+		Properties props = new Properties();
+		// new File("res/raw/textfile.txt")
+		InputStream inputStream = this.getClass().getClassLoader()
+				.getResourceAsStream("res/raw/lamiaspesaapp.properties");
 		try {
 			props.load(inputStream);
 		} catch (IOException e) {
@@ -79,10 +80,10 @@ public class Util {
 
 	public String getToken(String response) throws JSONException {
 		String token = "";
-		Log.d("eximia","risposta token: "+response);
+		Log.d("eximia", "risposta token: " + response);
 		JSONObject jObject = new JSONObject(response);
 		token = (String) jObject.get("sesionToken");
-		Log.d("eximia","token: "+ token);
+		Log.d("eximia", "token: " + token);
 		return token;
 	}
 
@@ -101,5 +102,13 @@ public class Util {
 		JSONArray finalResult = new JSONArray(tokener);
 		return finalResult.getString(0);
 
+	}
+
+	public String normalizzaUpc(String upc) {
+		while (upc.length() < 13) {
+			upc = upc + '0';
+		}
+
+		return upc;
 	}
 }

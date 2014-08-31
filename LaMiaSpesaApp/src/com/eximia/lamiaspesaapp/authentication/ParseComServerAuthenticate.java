@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -71,10 +72,18 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
 
 		return authtoken;
 	}
+	public class NotAuthorizedException extends Exception{
+
+		public NotAuthorizedException(String detailMessage) {
+			super(detailMessage);
+			// TODO Auto-generated constructor stub
+		}
+		
+	}
 
 	@Override
-	public String userSignIn(String user, String pass, String authType)
-			throws Exception {
+	public String userSignIn(String user, String pass, String authType) throws Exception 
+			 {
 
 		Log.d("eximia", "userSignIn");
 
@@ -113,7 +122,7 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
 			HttpResponse response = httpClient.execute(httpPost);
 			//String responseString = EntityUtils.toString(response.getEntity());
 			if (response.getStatusLine().getStatusCode() == 401)
-				throw new Exception("not authorized");
+				throw new NotAuthorizedException("not authorized user");
 			if (response.getStatusLine().getStatusCode() == 200) {
 				String responseText = EntityUtils.toString(response.getEntity()); 
 				authtoken = new Util().getToken(responseText);
