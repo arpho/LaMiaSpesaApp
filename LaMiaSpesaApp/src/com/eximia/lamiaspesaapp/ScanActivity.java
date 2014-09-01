@@ -201,7 +201,10 @@ public class ScanActivity extends FragmentActivity implements
 				Log.d("eximia", "sembra che debba loggarmi");
 				scanBundle.putBoolean("scan2Complete", true);
 				new EseguiLogin().execute();
+				
 			}
+			else
+				scanBundle.putBoolean("scan2Complete", false);
 			if (serverRaggiungibile) {
 				Log.d("eximia",
 						"sono in onPostExecute, cerco di parsare il json: "
@@ -237,6 +240,7 @@ public class ScanActivity extends FragmentActivity implements
 				HttpGet itemGet = null;
 				try {
 					itemGet = new HttpGet(itemSearchURL);
+					Log.d("eximia",itemSearchURL);
 					itemResponse = itemClient.execute(itemGet);
 					StatusLine itemSearchStatus = itemResponse.getStatusLine();
 					if (itemSearchStatus.getStatusCode() == 401) {
