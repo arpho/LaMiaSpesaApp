@@ -16,6 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.eximia.lamiaspesaapp.authentication.AccountGeneral;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.net.ParseException;
 import android.util.Log;
 
@@ -26,9 +30,29 @@ public class Util {
 
 	public static String getBaseUrl() {
 		// TODO deve ottenere l'indirizzo da un file di properties
-		return "http://192.168.1.66:8080";// "http://10.141.158.1:8080"; 10.141.158.1
+		return "http://192.168.1.66:8080";// "http://10.141.158.1:8080";
+											// 10.141.158.1
 		// TODO ottenere l'indirizzo da un file di properties
 
+	}
+
+	private Account getEximiaAccount(AccountManager mAccountManager) {
+		Account[] accounts = mAccountManager.getAccounts();
+		Account out = null;
+		int i = 0;
+		while (i < accounts.length) {
+			if (accounts[i].type.equalsIgnoreCase("com.eximia.lamiaspesaapp"))
+				out = accounts[i];
+			i += 1;
+		}
+		return out;
+	}
+
+	public void setToken(String token, AccountManager mAccountManager) {
+		Account lamiaspesaapp = getEximiaAccount(mAccountManager);
+		if (token != null)
+			mAccountManager.setAuthToken(lamiaspesaapp,
+					AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, token);
 	}
 
 	public String getProperty(String key) {

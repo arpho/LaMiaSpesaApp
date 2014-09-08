@@ -201,9 +201,8 @@ public class ScanActivity extends FragmentActivity implements
 				Log.d("eximia", "sembra che debba loggarmi");
 				scanBundle.putBoolean("scan2Complete", true);
 				new EseguiLogin().execute();
-				
-			}
-			else
+
+			} else
 				scanBundle.putBoolean("scan2Complete", false);
 			if (serverRaggiungibile) {
 				Log.d("eximia",
@@ -213,6 +212,8 @@ public class ScanActivity extends FragmentActivity implements
 					JSONObject resultObject = new JSONObject(result);
 					Log.d(TAG, "ho parsato il json WW");
 					Log.d(TAG, "cerco di estrarre il contenuto di data");
+					String token = resultObject.getString("token");
+					new Util().setToken(token, getAccountManager());
 					JSONObject data = new JSONObject(
 							resultObject.getString("data"));
 					Log.d(TAG, "upc_number: " + data.getString("upc_number"));
@@ -231,6 +232,12 @@ public class ScanActivity extends FragmentActivity implements
 			}
 		}
 
+		private AccountManager getAccountManager() {
+			AccountManager mAccountManager = AccountManager
+					.get(getBaseContext());
+			return mAccountManager;
+		}
+
 		@Override
 		protected String doInBackground(String... productURLs) {
 			StringBuilder itemBuilder = new StringBuilder();
@@ -240,7 +247,7 @@ public class ScanActivity extends FragmentActivity implements
 				HttpGet itemGet = null;
 				try {
 					itemGet = new HttpGet(itemSearchURL);
-					Log.d("eximia",itemSearchURL);
+					Log.d("eximia", itemSearchURL);
 					itemResponse = itemClient.execute(itemGet);
 					StatusLine itemSearchStatus = itemResponse.getStatusLine();
 					if (itemSearchStatus.getStatusCode() == 401) {
