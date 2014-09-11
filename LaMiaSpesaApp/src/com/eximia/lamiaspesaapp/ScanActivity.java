@@ -33,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import com.eximia.lamiaspesaapp.authentication.AccountGeneral;
 import com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity;
+import com.eximia.lamiaspesaapp.authentication.EseguiLoginTask;
 import com.eximia.lamiaspesaapp.authentication.EximiaAuthenticator;
 import com.eximia.lamiaspesaapp.utility.SingleBundle;
 import com.eximia.lamiaspesaapp.utility.Util;
@@ -363,72 +364,30 @@ public class ScanActivity extends FragmentActivity implements
 
 	}
 
-	class EseguiLogin extends AsyncTask<String, Void, String> {
-
+	class EseguiLogin extends EseguiLoginTask {
+		// extends AsyncTask<String, Void, String>
 		private String url;
 		private Account lamiaspesaapp;
 		private AccountManager mAccountManager;
 
 		@Override
 		protected void onPreExecute() {
-			lamiaspesaapp = getEximiaAccount();
-			mAccountManager = AccountManager.get(getBaseContext());
+			super.setLamiaspesaapp(getEximiaAccount());
+			super.setmAccountManager(AccountManager.get(getBaseContext()));
+			super.setUrl(super.buildUrl());
 			url = buildUrl();
-		}
-
-		private String buildUrl() {
-			// TODO Auto-generated method stub
-			StringBuilder out = new StringBuilder(Util.getBaseUrl());
-			out.append("/api_authentication");
-			out.append("?email=");
-			out.append(lamiaspesaapp.name);
-			out.append("&password=");
-			out.append(mAccountManager.getPassword(lamiaspesaapp));
-			return out.toString();
 		}
 
 		@Override
 		protected void onPostExecute(String token) {
 			if (token != null)
-				mAccountManager.setAuthToken(lamiaspesaapp,
+				super.getmAccountManager().setAuthToken(
+						super.getLamiaspesaapp(),
 						AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, token);
 			if (scanBundle.getBoolean("scan2Complete")) {
 				interrogaServer(scanBundle.getString("scanContent"),
 						scanBundle.getString("scanFormat"));
 			}
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			HttpClient client = new DefaultHttpClient();
-			HttpResponse response = null;
-			HttpPost loginPost = null;
-			String token = null;
-			String responseText;
-			loginPost = new HttpPost(url);
-			try {
-				response = client.execute(loginPost);
-				if (response.getStatusLine().getStatusCode() == 401) {
-					// TODO o l'account non esiste o la password
-					// è stata cambiata, deve avviare login attivity o
-					// aggiornare le credenzialie questa setterà ilnuovo token
-				} else {
-					responseText = EntityUtils.toString(response.getEntity());
-					try {
-						token = new Util().getToken(responseText);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return token;
 		}
 
 	}
