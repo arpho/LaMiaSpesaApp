@@ -3,31 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/testo_sviluppo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:text="Modalità"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+<ImageView
+        android:id="@+id/immagine_prodotto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/immagine_prodotto"
+        android:background="@drawable/noimage"
+        android:scaleType="fitXY" />
     <TextView
         android:id="@+id/testo_prodotto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="item name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ImageView
-        android:id="@+id/immagine_prodotto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/immagine_prodotto"
-        android:scaleType="fitXY" />
+    
+    
 
     <TextView
         android:id="@+id/testo_descrizione"
@@ -38,32 +31,38 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
-        android:layout_width="70dp"
-        android:layout_height="23dp"
-        android:layout_weight="0.10"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal" >
-
         <ImageButton
             android:id="@+id/voteup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:contentDescription="voteup"
-            android:src="@drawable/up" />
+            android:src="@drawable/ic_action_good" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
+        <TextView
+            android:id="@+id/mipiace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
-            android:layout_marginTop="10dp"
-            android:paddingBottom="0dp" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageButton
             android:id="@+id/votedown"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:contentDescription="votedown"
-            android:src="@drawable/dwn" />
+            android:src="@drawable/ic_action_bad" />
+
+        <TextView
+            android:id="@+id/nonmipiace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        
+
     </LinearLayout>
 
 </LinearLayout>

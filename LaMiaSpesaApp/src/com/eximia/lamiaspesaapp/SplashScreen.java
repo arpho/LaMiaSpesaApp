@@ -107,6 +107,11 @@ public class SplashScreen extends Activity {
 		}, SPLASH_TIME);
 
 	}
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		unbindService(myConnection);
+	}
 
 	@Override
 	public void onBackPressed() {

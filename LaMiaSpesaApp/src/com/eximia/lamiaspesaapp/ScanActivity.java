@@ -56,12 +56,12 @@ public class ScanActivity extends FragmentActivity implements
 		bundle.putString("format", "json");
 		bundle.putString("nome_prodotto", data.getString("itemname"));
 		bundle.putString("descrizione", data.getString("description"));
-		Double ratingsUp = Double.valueOf(data.getString("ratingsup"));
-		Double ratingsdown = Double.valueOf(data.getString("ratingsdown"));
-		Double rate = ratingsUp / (ratingsUp + ratingsdown) * 5;
-		bundle.putDouble("rate", rate);
+		int ratingsUp = Integer.parseInt(data.getString("ratingsup"));
+		int ratingsDown = Integer.parseInt(data.getString("ratingsdown"));
+		//Double rate = ratingsUp / (ratingsUp + ratingsdown) * 5;
+		bundle.putInt("mipiace", ratingsUp);
+		bundle.putInt("nonmipiace", ratingsDown);
 		bundle.putString("picture", data.getString("pictures"));
-		bundle.putString("developing", sviluppo ? "modalità sviluppo" : "");
 
 		return bundle;
 	}
