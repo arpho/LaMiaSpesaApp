@@ -26,6 +26,9 @@ public class LoginService extends Service {
 		public String getUrl() {
 			return url;
 		}
+		
+		public void authenticate(Bundle bundle){
+		}
 
 		public void setUrl(String url) {
 			this.url = url;

@@ -162,7 +162,7 @@ public class ProductFragment extends Fragment {
 
 	private void setText(View view2, int id, int value) {
 		TextView Txt = (TextView) view2.findViewById(id);
-		Txt.setText(value+"");
+		Txt.setText(value + "");
 
 	}
 
@@ -205,7 +205,7 @@ public class ProductFragment extends Fragment {
 	private String generaUrl(String picture) {
 		// TODO inserire la giusta richiesta per le immagini
 
-		return Util.getBaseUrl() + "/media/pics/" + picture;
+		return new Util().getBaseUrl() + "/media/pics/" + picture;
 	}
 
 	private void setPicture(View view, int id, Bitmap picture) {

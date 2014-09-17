@@ -27,7 +27,7 @@ public class BundledLogin extends AsyncTask<Bundle, Void, Bundle> {
 		// TODO Auto-generated method stub
 		String email = myBundle.getString("email");
 		String password = myBundle.getString("password");
-		StringBuilder out = new StringBuilder(Util.getBaseUrl());
+		StringBuilder out = new StringBuilder(new Util().getBaseUrl());
 		out.append("/api_authentication");
 		out.append("?email=");
 		out.append(email/* lamiaspesaapp.name */);

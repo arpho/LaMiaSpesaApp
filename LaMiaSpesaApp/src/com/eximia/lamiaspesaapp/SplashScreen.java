@@ -35,6 +35,7 @@ public class SplashScreen extends Activity {
 	private Account getEximiaAccount() {
 		AccountManager mAccountManager = AccountManager.get(getBaseContext());
 		Account[] accounts = mAccountManager.getAccounts();
+		Log.d("eximia","cerco account");
 		Account out = null;
 		int i = 0;
 		while (i < accounts.length) {
@@ -79,7 +80,7 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
 		Intent intent = new Intent(this, LoginService.class);
-		bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
+		/*getApplicationContext().*/bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
 
 		// TODO rimuovere handler e sostituire con codice di EseguiLogin in
 		// ScanActivity
@@ -107,10 +108,15 @@ public class SplashScreen extends Activity {
 		}, SPLASH_TIME);
 
 	}
+
 	@Override
-	protected void onDestroy(){
+	protected void onDestroy() {
 		super.onDestroy();
+		try{
 		unbindService(myConnection);
+		}finally{
+			//TODO da sistemare fa schifo così
+		}
 	}
 
 	@Override

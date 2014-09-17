@@ -24,7 +24,7 @@ public class EseguiLoginTask extends AsyncTask<String, Void, String> {
 
 	public String buildUrl() {
 		// TODO Auto-generated method stub
-		StringBuilder out = new StringBuilder(Util.getBaseUrl());
+		StringBuilder out = new StringBuilder(new Util().getBaseUrl());
 		out.append("/api_authentication");
 		out.append("?email=");
 		out.append(lamiaspesaapp.name);

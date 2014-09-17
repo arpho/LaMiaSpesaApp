@@ -58,7 +58,7 @@ public class ScanActivity extends FragmentActivity implements
 		bundle.putString("descrizione", data.getString("description"));
 		int ratingsUp = Integer.parseInt(data.getString("ratingsup"));
 		int ratingsDown = Integer.parseInt(data.getString("ratingsdown"));
-		//Double rate = ratingsUp / (ratingsUp + ratingsdown) * 5;
+		// Double rate = ratingsUp / (ratingsUp + ratingsdown) * 5;
 		bundle.putInt("mipiace", ratingsUp);
 		bundle.putInt("nonmipiace", ratingsDown);
 		bundle.putString("picture", data.getString("pictures"));
@@ -166,7 +166,7 @@ public class ScanActivity extends FragmentActivity implements
 	private String prepareRequest(String scanContent, String token) {
 		// Properties props = new Properties();
 		Log.d(TAG, "token: " + token);
-		StringBuilder url = new StringBuilder(Util.getBaseUrl());
+		StringBuilder url = new StringBuilder(new Util().getBaseUrl());
 		url.append("/get_item?upc=");
 		url.append(scanContent);
 		url.append("&token=");

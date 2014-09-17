@@ -18,15 +18,4 @@
 
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="fill_parent"
-        android:layout_height="51dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="13dp"
-        android:background="@drawable/titolo_top"
-        android:contentDescription="@string/titolotop"
-        android:paddingLeft="100dp"
-        android:scaleType="fitXY" />
-
 </RelativeLayout>

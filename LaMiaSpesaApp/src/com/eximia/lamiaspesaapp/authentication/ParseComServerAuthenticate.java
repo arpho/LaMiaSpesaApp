@@ -72,23 +72,24 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
 
 		return authtoken;
 	}
-	public class NotAuthorizedException extends Exception{
+
+	public class NotAuthorizedException extends Exception {
 
 		public NotAuthorizedException(String detailMessage) {
 			super(detailMessage);
 			// TODO Auto-generated constructor stub
 		}
-		
+
 	}
 
 	@Override
-	public String userSignIn(String user, String pass, String authType) throws Exception 
-			 {
+	public String userSignIn(String user, String pass, String authType)
+			throws Exception {
 
 		Log.d("eximia", "userSignIn");
 
 		DefaultHttpClient httpClient = new DefaultHttpClient();
-		String url = Util.getBaseUrl() + "/api_authentication";
+		String url = new Util().getBaseUrl() + "/api_authentication";
 		// TODO impostare per il mio server
 		// authType è il tipo di autenticazione richiesta, a me non interessa
 
@@ -120,13 +121,15 @@ public class ParseComServerAuthenticate implements ServerAuthenticate {
 		StringBuilder itemBuilder = new StringBuilder();
 		try {
 			HttpResponse response = httpClient.execute(httpPost);
-			//String responseString = EntityUtils.toString(response.getEntity());
+			// String responseString =
+			// EntityUtils.toString(response.getEntity());
 			if (response.getStatusLine().getStatusCode() == 401)
 				throw new NotAuthorizedException("not authorized user");
 			if (response.getStatusLine().getStatusCode() == 200) {
-				String responseText = EntityUtils.toString(response.getEntity()); 
+				String responseText = EntityUtils
+						.toString(response.getEntity());
 				authtoken = new Util().getToken(responseText);
-				Log.d("eximia",authtoken);
+				Log.d("eximia", authtoken);
 				/*
 				 * throw new Exception("Error signing-in [" + error.code +
 				 * "] - " + error.error);

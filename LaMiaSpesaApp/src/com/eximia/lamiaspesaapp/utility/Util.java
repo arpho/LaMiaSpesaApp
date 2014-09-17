@@ -27,11 +27,13 @@ import android.util.Log;
  * Created by arpho on 15/08/14.
  */
 public class Util {
+	final private String IP = this.getProperty("SERVER_IP");
 
-	public static String getBaseUrl() {
+	public String getBaseUrl() {
 		// TODO deve ottenere l'indirizzo da un file di properties
-		return "http://192.168.1.66:8080";// "http://10.141.158.1:8080";
-											// 10.141.158.1
+		return "http://" + IP + ":8080";// "http://192.168.1.66:8080";//
+										// "http://10.141.158.1:8080";
+										// 10.141.158.1
 		// TODO ottenere l'indirizzo da un file di properties
 
 	}
