@@ -79,16 +79,18 @@ public class SplashScreen extends Activity {
 		mAccountManager = AccountManager.get(getBaseContext());
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
-		Intent intent = new Intent(this, LoginService.class);
-		/*getApplicationContext().*/bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
-
+		final Intent loginIntent = new Intent(this, LoginService.class);
 		// TODO rimuovere handler e sostituire con codice di EseguiLogin in
 		// ScanActivity
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-				Log.d("eximia", "lanciato handler");
+				Log.d("eximia", "lancio il servizio di login");
+
+				
+				/*getApplicationContext().*/bindService(loginIntent, myConnection, Context.BIND_AUTO_CREATE);
+				startService(loginIntent);
 
 				Intent intent = new Intent(SplashScreen.this,
 						ScanActivity.class);
