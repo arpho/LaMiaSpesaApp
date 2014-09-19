@@ -23,6 +23,22 @@ public class BundledLogin extends AsyncTask<Bundle, Void, Bundle> {
 	protected Account lamiaspesaapp;
 	private AccountManager mAccountManager;
 
+	public Account getLamiaspesaapp() {
+		return lamiaspesaapp;
+	}
+
+	public void setLamiaspesaapp(Account lamiaspesaapp) {
+		this.lamiaspesaapp = lamiaspesaapp;
+	}
+
+	public AccountManager getmAccountManager() {
+		return mAccountManager;
+	}
+
+	public void setmAccountManager(AccountManager mAccountManager) {
+		this.mAccountManager = mAccountManager;
+	}
+
 	public String buildUrl(Bundle myBundle) {
 		// TODO Auto-generated method stub
 		String email = myBundle.getString("email");
@@ -44,21 +60,11 @@ public class BundledLogin extends AsyncTask<Bundle, Void, Bundle> {
 		this.url = url;
 	}
 
-	public Account getLamiaspesaapp() {
-		return lamiaspesaapp;
-	}
+	
 
-	public void setLamiaspesaapp(Account lamiaspesaapp) {
-		this.lamiaspesaapp = lamiaspesaapp;
-	}
+	
 
-	public AccountManager getmAccountManager() {
-		return mAccountManager;
-	}
-
-	public void setmAccountManager(AccountManager mAccountManager) {
-		this.mAccountManager = mAccountManager;
-	}
+	
 
 	@Override
 	protected Bundle doInBackground(Bundle... bundle) {

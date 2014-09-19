@@ -1,5 +1,7 @@
 package com.eximia.lamiaspesaapp;
 
+import com.eximia.lamiaspesaapp.authentication.AccountGeneral;
+import com.eximia.lamiaspesaapp.authentication.BundledLogin;
 import com.eximia.lamiaspesaapp.authentication.LoginService;
 import com.eximia.lamiaspesaapp.authentication.LoginService.MyLocalBinder;
 
@@ -72,6 +74,76 @@ public class SplashScreen extends Activity {
 	};
 
 	private static final int SPLASH_TIME = 3 * 1000;// 3 seconds
+	
+	
+
+	class EseguiLogin extends BundledLogin {
+		// extends AsyncTask<String, Void, String>
+		private String url;
+		private Bundle bundle;
+
+		public String getUrl() {
+			return url;
+		}
+		
+		public void authenticate(Bundle bundle){
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
+		}
+
+		public Bundle getBundle() {
+			return bundle;
+		}
+
+		public void setBundle(Bundle bundle) {
+			this.bundle = bundle;
+		}
+
+		public Account getLamiaspesaapp() {
+			return lamiaspesaapp;
+		}
+
+		public AccountManager getmAccountManager() {
+			return mAccountManager;
+		}
+
+		public void setmAccountManager(AccountManager mAccountManager) {
+			this.mAccountManager = mAccountManager;
+		}
+
+		// private Account lamiaspesaapp;
+		private AccountManager mAccountManager;
+
+		@Override
+		protected void onPreExecute() {
+			super.setLamiaspesaapp(getEximiaAccount());
+			super.setmAccountManager(AccountManager.get(getBaseContext()));
+			//super.setUrl(super.buildUrl());
+			//url = buildUrl();
+		}
+
+		@Override
+		protected void onPostExecute(Bundle bundle) {
+			//if (bundle != null)
+			String token = bundle.getString("token");
+			super.getmAccountManager().setAuthToken(
+					super.getLamiaspesaapp(),
+					AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, token);
+			Log.d("eximia", "ho rinnovato il token");
+			SplashScreen.this.finish();
+
+			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			/*
+			 * if (scanBundle.getBoolean("scan2Complete")) {
+			 * interrogaServer(scanBundle.getString("scanContent"),
+			 * scanBundle.getString("scanFormat")); }
+			 */
+		}
+
+	}
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +152,11 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
 		final Intent loginIntent = new Intent(this, LoginService.class);
+		final Bundle bundle = new Bundle();
+		Account account = this.getEximiaAccount();
+		bundle.putString("email", account.name);
+		AccountManager accountManager = AccountManager.get(getBaseContext());
+		bundle.putString("password", accountManager.getPassword(account));
 		// TODO rimuovere handler e sostituire con codice di EseguiLogin in
 		// ScanActivity
 		new Handler().postDelayed(new Runnable() {
@@ -95,10 +172,9 @@ public class SplashScreen extends Activity {
 				Intent intent = new Intent(SplashScreen.this,
 						ScanActivity.class);
 				startActivity(intent);
+				new EseguiLogin().execute(bundle);
 
-				SplashScreen.this.finish();
-
-				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+				
 
 			}
 		}, SPLASH_TIME);

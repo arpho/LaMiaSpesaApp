@@ -42,13 +42,8 @@ public class LoginService extends Service {
 			this.bundle = bundle;
 		}
 
-		public Account getLamiaspesaapp() {
-			return lamiaspesaapp;
-		}
+		
 
-		public void setLamiaspesaapp(Account lamiaspesaapp) {
-			this.lamiaspesaapp = lamiaspesaapp;
-		}
 
 		public AccountManager getmAccountManager() {
 			return mAccountManager;
@@ -63,8 +58,6 @@ public class LoginService extends Service {
 
 		@Override
 		protected void onPreExecute() {
-			super.setLamiaspesaapp(getEximiaAccount());
-			super.setmAccountManager(AccountManager.get(getBaseContext()));
 			/*
 			 * super.setUrl(super.buildUrl(bundle)); url = buildUrl(bundle);
 			 */
@@ -73,10 +66,6 @@ public class LoginService extends Service {
 		@Override
 		protected void onPostExecute(Bundle bundle) {
 			if (bundle != null)
-				super.getmAccountManager().setAuthToken(
-						super.getLamiaspesaapp(),
-						AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS,
-						bundle.getString("token"));
 			Log.d("eximia", "ho rinnovato il token");
 			readyToken = true;
 			/*
