@@ -1,20 +1,18 @@
 package com.eximia.lamiaspesaapp;
 
+import com.facebook.*;
+import com.facebook.model.*;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,8 +29,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import com.eximia.lamiaspesaapp.authentication.AccountGeneral;
-import com.eximia.lamiaspesaapp.authentication.AuthenticatorActivity;
 import com.eximia.lamiaspesaapp.authentication.EseguiLoginTask;
 import com.eximia.lamiaspesaapp.authentication.EximiaAuthenticator;
 import com.eximia.lamiaspesaapp.utility.SingleBundle;
@@ -186,6 +184,8 @@ public class ScanActivity extends FragmentActivity implements
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		IntentResult scanningResult = IntentIntegrator.parseActivityResult(
 				requestCode, resultCode, intent);
+		super.onActivityResult(requestCode, resultCode, intent);
+		Session.getActiveSession().onActivityResult(this, requestCode, resultCode, intent);
 		if (scanningResult != null) {
 			elaboraRisultatoScan(scanningResult);
 		} else {
